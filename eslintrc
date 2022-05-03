@@ -1,6 +1,12 @@
 {
   "extends": "airbnb",
   "rules": {
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }]
+    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
+    "camelcase": [
+      "error", {"allow": ["aa_bb"],
+      "ignoreDestructuring": true,
+      "properties": "never",
+      "ignoreGlobals": true,
+      "ignoreImports": true,}]
   }
 }

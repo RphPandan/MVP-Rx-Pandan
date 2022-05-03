@@ -1,8 +1,22 @@
 import React from 'react';
+import RxOverview from './RxOverview';
+import RxInteractions from './RxInteractions';
+import {
+  BigContainer, Header, AppContainer,
+} from './styles/Boxes';
 
 function App() {
   return (
-    <h1>Hello World!</h1>
+    <BigContainer>
+      <AppContainer border="true">
+        <Header>
+          hello World
+        </Header>
+        <RxOverview />
+        <RxInteractions />
+      </AppContainer>
+    </BigContainer>
+
   );
 }
 

@@ -9,6 +9,7 @@ const AlignmentWrapper = styled(Theme)`
 const ColumnContainer = styled(Theme)`
   display: flex;
   flex-direction: column;
+
   row-gap: ${(props) => props.rowGap || null};
   column-gap: ${(props) => props.columnGap || null};
   padding: ${(props) => sizes[props.padding] || null};
@@ -20,8 +21,8 @@ const RowContainer = styled(ColumnContainer)`
 `;
 
 const BigContainer = styled(RowContainer)`
+  height: 100em;
   width: 100%;
-  align-items: center;
   justify-content: center;
 
 `;
@@ -29,10 +30,17 @@ const EmptyBoxes = styled(ColumnContainer)`
   max-width: 15%;
 `;
 const AppContainer = styled(ColumnContainer)`
-  max-width: 70%;
+  max-width: 100em;
+  min-width: 50em;
+  height: 100em;
   align-self: center;
+  align-items: center;
+`;
+
+const Header = styled(RowContainer)`
+  font-size:50px;
 `;
 
 export {
-  AlignmentWrapper, ColumnContainer, RowContainer, BigContainer, EmptyBoxes, AppContainer,
+  Header, AlignmentWrapper, ColumnContainer, RowContainer, BigContainer, EmptyBoxes, AppContainer,
 };
