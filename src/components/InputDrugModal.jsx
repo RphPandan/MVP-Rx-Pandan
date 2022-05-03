@@ -51,8 +51,12 @@ function InputDrugModal() {
       </OverviewRow>
       {searchResultList.map((result) => {
         const {
-          product_ndc, generic_name, brand_name, active_ingredients,
+          product_ndc, generic_name, brand_name, dosage_form,
         } = result;
+        let { active_ingredients } = result;
+        active_ingredients = active_ingredients
+          .map((ingredient) => (`${ingredient.name} + ${ingredient.strength}`))
+          .join(' + ');
         return (
           <SearchListOption
             key={product_ndc}
@@ -60,6 +64,7 @@ function InputDrugModal() {
             generic_name={generic_name}
             brand_name={brand_name}
             active_ingredients={active_ingredients}
+            dosage_form={dosage_form}
             // openfda={openfda}
           />
         );
