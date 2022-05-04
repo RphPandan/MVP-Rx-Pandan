@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 import { ColumnContainer, RowContainer, AlignmentWrapper } from './styles/Boxes';
+// import Text from './styles/Text';
 
 const { submitRxToList } = require('./controller');
 
@@ -12,23 +13,29 @@ const Form = styled(ColumnContainer)`
 const FormContainer = styled(ColumnContainer)`
 `;
 
+const DrugText = styled.p`
+  margin: 5px;
+`;
+
 function RxDosageSelector({ drug, setSelectedDrugIndex }) {
   const [directions, setDirections] = useState('');
   const [frequency, setFrequency] = useState(0);
   const [quantity, setQuantity] = useState('');
-  const { active_ingredients, openfda, pharm_class } = drug;
+  const {
+    active_ingredients, openfda,
+    pharm_class, dosage,
+  } = drug;
   const { rxcui } = openfda;
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = () => {
     const rx = {
       active_ingredients,
+      dosage,
       directions,
       frequency,
       quantity,
       rxcui,
       pharm_class,
-
     };
     submitRxToList(rx)
       .then((result) => {
@@ -43,27 +50,28 @@ function RxDosageSelector({ drug, setSelectedDrugIndex }) {
     <AlignmentWrapper>
       <FormContainer rowGap="20px">
         <RowContainer columnGap="20px">
-          <div>{active_ingredients}</div>
-          <div>
+          <DrugText>
+            {`${active_ingredients} ${dosage}`}
+          </DrugText>
+          <DrugText>
             frequency:
             {frequency}
-          </div>
-          <div>
+          </DrugText>
+          <DrugText>
             quantity:
             {quantity}
-          </div>
+          </DrugText>
 
         </RowContainer>
         <Form as="form" rowGap="10px">
           <input
             id="directions"
             type="text"
-            placeholder="...directions"
             value={directions}
             onChange={(e) => { e.preventDefault(); setDirections(e.target.value); }}
+            minLength="8"
             required
           />
-
           <input
             id="frequency"
             type="number"
@@ -107,6 +115,9 @@ function RxDosageSelector({ drug, setSelectedDrugIndex }) {
 RxDosageSelector.propTypes = {
   drug: PropTypes.shape({
     active_ingredients: PropTypes.string.isRequired,
+    dosage: PropTypes.string.isRequired,
+    generic_name: PropTypes.string.isRequired,
+    brand_name: PropTypes.string.isRequired,
     pharm_class: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     openfda: PropTypes.shape({
       rxcui: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,

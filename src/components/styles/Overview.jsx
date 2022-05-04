@@ -3,10 +3,7 @@ import { ColumnContainer, RowContainer } from './Boxes';
 
 const OverviewContainer = styled(ColumnContainer)`
   min-height: 80em;
-  width: 100%;
-  align-items: center;
-
-
+  min-width: 80em;
 `;
 
 const OverviewRow = styled(RowContainer)`

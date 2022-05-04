@@ -7,6 +7,7 @@ const endpoints = {
   GetSpellingRxNorm: 'https://rxnav.nlm.nih.gov/REST/Prescribe/spellingsuggestions.json?',
   GetDrugsOpenFDA: 'https://api.fda.gov/drug/ndc.json?',
   SubmitRx: 'http://localhost:2022/Rx/Submit',
+  RetrieveRx: 'http://localhost:2022/Rx/',
   test: 'http://localhost:2022/test',
 };
 const test = () => axios.get(endpoints.test);
@@ -20,30 +21,38 @@ const getDrugsOpenFDA = (name, exact = false, limit = 50, skip = 0) => {
   return axios.get(`${endpoints.GetDrugsOpenFDA}search=${search}`);
 };
 
-const submitRxToList = (rx) => axios.post(endpoints.SubmitRx, rx);
+const submitRxToList = (rx) => axios.post(endpoints.SubmitRx, rx)
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+const retrieveRxList = (setRxList) => {
+  console.log(setRxList);
+  return axios.get(endpoints.RetrieveRx);
+};
+
+const format = (active_ingredients) => {
+  const ingredients = [];
+  const dosage = [];
+  active_ingredients.forEach((ingredient) => {
+    ingredients.push(ingredient.name);
+    let { strength } = ingredient;
+    const index1 = strength.lastIndexOf('/1');
+    if (index1 === strength.length - 2) {
+      strength = strength.slice(0, index1);
+    }
+    dosage.push(strength);
+  });
+  const result = [ingredients.join('/'), dosage.join('/')];
+  return result;
+};
 
 const filterAndModifyDrugList = (arrayOfDrugs, setDosageForms) => {
   const hash = {};
   const dosageFormHash = {};
-  const format = (active_ingredients) => {
-    const ingredients = [];
-    const dosage = [];
-    active_ingredients.forEach((ingredient) => {
-      ingredients.push(ingredient.name);
-      let { strength } = ingredient;
-      const index1 = strength.lastIndexOf('/1');
-      if (index1 === strength.length - 2) {
-        strength = strength.slice(0, index1);
-      }
-      dosage.push(strength);
-    });
-    const result = `${ingredients.join('/')} - ${dosage.join('/')}`;
-    return result;
-  };
-    // active_ingredients
-    //   .map((ingredient) => (`${ingredient.name} | ${ingredient.strength}`))
-    //   .join(' || ')
-
   const newListOfDrugs = arrayOfDrugs.filter((drug) => {
     const {
       product_ndc, active_ingredients, dosage_form,
@@ -69,12 +78,11 @@ const filterAndModifyDrugList = (arrayOfDrugs, setDosageForms) => {
     return false;
   });
 
-  // console.log(newListOfDrugs, 'this is newList of drugs');
-
   newListOfDrugs.map((drug) => {
     const { active_ingredients } = drug;
     const formatted = drug;
-    formatted.active_ingredients = `${format(active_ingredients)} ${drug.dosage_form}`;
+    // formatted.active_ingredients = `${format(active_ingredients)} ${drug.dosage_form}`;
+    [formatted.active_ingredients, formatted.dosage] = format(active_ingredients);
     return formatted;
   });
   setDosageForms(Object.keys(dosageFormHash).map((key) => {
@@ -90,5 +98,6 @@ module.exports = {
   getDrugsOpenFDA,
   filterAndModifyDrugList,
   submitRxToList,
+  retrieveRxList,
   test,
 };

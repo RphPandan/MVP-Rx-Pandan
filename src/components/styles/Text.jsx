@@ -3,7 +3,7 @@ import { Theme } from './Theme';
 
 const Title = styled.h1`
 ${Theme}
-  font-size: 30px;
+  font-size: 50px;
 `;
 
 const Title2 = styled.h2`
@@ -14,4 +14,4 @@ const Title2 = styled.h2`
 const Text = styled.p`
   font-size:12px;
 `;
-export default { Title, Title2, Text };
+export { Title, Title2, Text };

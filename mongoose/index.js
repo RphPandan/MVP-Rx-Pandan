@@ -11,7 +11,45 @@ mongoose.connect(`mongodb://${process.env.MGHOST}:${process.env.MGPORT}/${proces
     console.log('could not connect to mongoose');
   });
 
-const Rx = mongoose.model('rx', new Schema({
-}));
+const RxSchema = new Schema({
+  active_ingredients: {
+    type: String,
+    unique: true,
+    required: true,
+  },
+  dosage: {
+    type: String,
+    required: true,
+  },
+  directions: {
+    type: String,
+    minlength: 8,
+    lowercase: true,
+    trim: true,
+    required: true,
+  },
+  frequency: {
+    type: Number,
+    required: true,
+  },
+  quantity: {
+    type: Number,
+    required: true,
+  },
+  rxcui: {
+    type: Array,
+    required: true,
+  },
+  pharm_class: {
+    type: Array,
+    required: true,
+  },
+  adherence: {
+    type: Boolean,
+    default: false,
+  },
+}, { timestamps: true });
+
+const Rx = mongoose.model('rx', RxSchema, 'Rx');
 
 module.exports = { mongoose, Rx };

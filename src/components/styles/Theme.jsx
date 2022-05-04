@@ -2,7 +2,7 @@ import styled from 'styled-components/macro';
 
 const colors = {
   primary: '#30323a',
-  secondary: '#F1F3F8',
+  secondary: '#fdfdfdef',
   warning: '#da3030',
   accent: '#9bbaeb',
   other: '#8D93AB',
@@ -29,7 +29,7 @@ const Theme = styled.div`
   }}
 
 
-  background: ${(props) => colors[props.background] || colors.secondary}
+  background: ${(props) => colors[props.background] || colors.secondary};
   color: ${(props) => colors[props.color] || colors.primary};
 
   border: ${(props) => (props.border ? `2px solid ${colors.primary}` : null)};

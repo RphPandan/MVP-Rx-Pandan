@@ -24,17 +24,13 @@ const BigContainer = styled(RowContainer)`
   height: 100em;
   width: 100%;
   justify-content: center;
-
 `;
 const EmptyBoxes = styled(ColumnContainer)`
   max-width: 15%;
 `;
 const AppContainer = styled(ColumnContainer)`
-  max-width: 100em;
-  min-width: 50em;
+  min-width:80em;
   height: 100em;
-  align-self: center;
-  align-items: center;
 `;
 
 const Header = styled(RowContainer)`
