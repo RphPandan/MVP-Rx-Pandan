@@ -1,10 +1,10 @@
 import React from 'react';
 // import PropTypes from 'prop-types'
 
-function RxList() {
-  return <div>RxList</div>;
+function Rx() {
+  return <div>Rx</div>;
 }
 
-RxList.propTypes = {};
+Rx.propTypes = {};
 
-export default RxList;
+export default Rx;

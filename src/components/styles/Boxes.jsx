@@ -41,6 +41,13 @@ const Header = styled(RowContainer)`
   font-size:50px;
 `;
 
+const Button = styled(Theme)`
+
+`;
+
 export {
-  Header, AlignmentWrapper, ColumnContainer, RowContainer, BigContainer, EmptyBoxes, AppContainer,
+  Header, AlignmentWrapper,
+  ColumnContainer, RowContainer,
+  BigContainer, EmptyBoxes,
+  AppContainer, Button,
 };

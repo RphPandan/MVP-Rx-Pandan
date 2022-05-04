@@ -10,4 +10,8 @@ const Title2 = styled.h2`
   ${Theme}
   font-size:24px;
 `;
-export default { Title, Title2 };
+
+const Text = styled.p`
+  font-size:12px;
+`;
+export default { Title, Title2, Text };

@@ -1,34 +1,62 @@
 /* eslint-disable camelcase */
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 // import PropTypes from 'prop-types';
 import { OverviewRow } from './styles/Overview';
-import SearchListOption from './SearchListOption';
+import { Button } from './styles/Boxes';
+// import SearchListOption from './SearchListOption';
+import RxDosageSelector from './RxDosageSelector';
+import SearchList from './SearchList';
 
-const { getDrugsOpenFDA } = require('./controller');
+const { getDrugsOpenFDA, filterAndModifyDrugList } = require('./controller');
 
 function InputDrugModal() {
   const [searchResultList, setSearchResultList] = useState([]);
-  const [limit, setLimit] = useState(50);
-  const [skip, setSkip] = useState(0);
+  const [limit, setLimit] = useState(500);
+  // const [skip, setSkip] = useState(0);
+  const [selectedDrugIndex, setSelectedDrugIndex] = useState(null);
   const [exact] = useState(false);
+  const [total, setTotal] = useState(null);
   const [query, setQuery] = useState('');
+  const [dosageForms, setDosageForms] = useState([]);
+  const [filter, setFilter] = useState({});
+  const [filterChange, setFilterChange] = useState(false);
 
-  function handleSubmit(e, name) {
+  const handleSubmit = (e, name) => {
     // name, exact = false, limit = 50, skip = 1
     e.preventDefault();
-    return getDrugsOpenFDA(name, exact, limit, skip)
+    return getDrugsOpenFDA(name, exact, limit)
       .then((result) => {
-        console.log(result.data.results);
-        setSearchResultList(result.data.results);
+        setTotal(result.data.results.length);
+        const searchList = filterAndModifyDrugList(result.data.results, setDosageForms);
+        setSearchResultList(searchList);
       })
       .catch((err) => {
         console.log(err);
       });
-  }
+  };
+
+  const handleFilterButton = (e, name) => {
+    e.preventDefault();
+    console.log(name);
+    const newFilter = filter;
+    if (newFilter[name]) {
+      newFilter[name] = false;
+    } else {
+      newFilter[name] = true;
+    }
+    setFilter(newFilter);
+    setFilterChange((prev) => !prev);
+
+    console.log(newFilter);
+  };
+
+  useEffect(() => {
+
+  }, [filter]);
 
   return (
     <div>
-      <OverviewRow as="form">
+      <OverviewRow as="form" columnGap="20px">
         <input
           id="query"
           type="text"
@@ -46,42 +74,60 @@ function InputDrugModal() {
           id="limit"
           type="number"
           value={limit}
+          placeholder="...defaults to 500"
           onChange={(e) => { e.preventDefault(); setLimit(e.target.value); }}
         />
+        <div>{`${total} results back`}</div>
       </OverviewRow>
-      {searchResultList.map((result) => {
-        const {
-          product_ndc, generic_name, brand_name, dosage_form,
-        } = result;
-        let { active_ingredients } = result;
-        active_ingredients = active_ingredients
-          .map((ingredient) => (`${ingredient.name} + ${ingredient.strength}`))
-          .join(' + ');
+      {selectedDrugIndex === null ? dosageForms.map((formulation) => {
+        const { dosageForm, count } = formulation;
         return (
-          <SearchListOption
-            key={product_ndc}
-            product_ndc={product_ndc}
-            generic_name={generic_name}
-            brand_name={brand_name}
-            active_ingredients={active_ingredients}
-            dosage_form={dosage_form}
-            // openfda={openfda}
-          />
+          <Button
+            as="button"
+            type="button"
+            name={dosageForm}
+            onClick={(e) => { handleFilterButton(e, e.target.name); }}
+            key={dosageForm}
+          >
+            {`${dosageForm} `}
+            {`${count} results`}
+          </Button>
         );
-      })}
-      <button
+      }) : null}
+      {selectedDrugIndex !== null
+        ? (
+          <RxDosageSelector
+            drug={searchResultList[selectedDrugIndex]}
+            setSelectedDrugIndex={setSelectedDrugIndex}
+          />
+        )
+        : null}
+      {searchResultList.length > 0 && selectedDrugIndex === null
+        ? (
+          <SearchList
+            filterChange={filterChange}
+            filter={filter}
+            searchResultList={searchResultList}
+            setSelectedDrugIndex={setSelectedDrugIndex}
+          />
+        )
+        : null}
+      {/* <button
         type="button"
-        onClick={(e) => { e.preventDefault(); setSkip((prev) => prev - 1); }}
+        onClick={(e) => { e.preventDefault(); setSkip(limit > 0 ? limit - 1 : null); }}
       >
         prev page
       </button>
       <h2>{skip + 1}</h2>
       <button
         type="button"
-        onClick={(e) => { e.preventDefault(); setSkip((prev) => prev + 1); }}
+        onClick={(e) => {
+          e.preventDefault();
+          setSkip(searchResultList.length > 0 ? limit + 1 : null);
+        }}
       >
         next page
-      </button>
+      </button> */}
 
     </div>
   );

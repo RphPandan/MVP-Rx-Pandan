@@ -2,8 +2,11 @@
 
 const controller = {
   test: (req, res) => {
-    console.log(req.url);
     res.send('hello World!');
+  },
+  submit: (req, res) => {
+    console.log(req.body);
+    res.send('hello from submit');
   },
 };
 
