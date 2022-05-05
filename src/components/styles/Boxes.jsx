@@ -55,6 +55,7 @@ const MainHeader = styled(RowContainer)`
   border-radius: 20px;
   margin: 10px 0 10px 0;
   box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+  cursor: ${(props) => { if (props.as === 'button') { return 'pointer'; } return null; }};
 `;
 
 const ButtonTheme = styled.button`

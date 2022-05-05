@@ -98,6 +98,25 @@ const deleteRx = (rx) => axios.delete(endpoints.DeleteRx, rx);
 
 const updateRx = (rx) => axios.put(endpoints.UpdateRx, rx);
 
+function deepSearchByKey(object, target, results = []) {
+  if (object != null) {
+    if (Array.isArray(object)) {
+      object.forEach((arrayItem) => {
+        deepSearchByKey(arrayItem, target, results);
+      });
+    } else if (typeof object === 'object') {
+      Object.keys(object).forEach((key) => {
+        if (key === target) {
+          results.push(object);
+        } else {
+          deepSearchByKey(object[key], target, results);
+        }
+      });
+    }
+  }
+  return results;
+}
+
 module.exports = {
   getDrugsByName,
   getSpellingSuggestion,
@@ -108,5 +127,6 @@ module.exports = {
   retrieveRxList,
   deleteRx,
   updateRx,
+  deepSearchByKey,
   test,
 };

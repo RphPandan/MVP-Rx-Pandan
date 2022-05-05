@@ -4,16 +4,12 @@ import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
 
 import {
-  MainHeader, AlignmentWrapper,
-  ColumnContainer, Button,
+  MainHeader,
+  ColumnContainer,
 } from './styles/Boxes';
 import { Title2 } from './styles/Text';
 import InteractionsModal from './InteractionsModal';
 
-const CheckInteractionsButton = styled(Button)`
-  width: 200px;
-  height: 50px;
-`;
 const InteractionContainers = styled(ColumnContainer)`
   overflow-y: auto;
   border-radius: 12px;
@@ -27,17 +23,13 @@ function RxInteractions(props) {
 
   return (
     <InteractionContainers>
-      <MainHeader background="primary">
+      <MainHeader
+        as="button"
+        background="primary"
+        onClick={(e) => { e.preventDefault(); setInteractionModal(true); }}
+      >
         <Title2 background="primary" color="secondary">Potential Interactions</Title2>
       </MainHeader>
-      <AlignmentWrapper>
-        <CheckInteractionsButton
-          type="button"
-          onClick={(e) => { e.preventDefault(); setInteractionModal(true); }}
-        >
-          CheckInteractionsButton
-        </CheckInteractionsButton>
-      </AlignmentWrapper>
       {interactionModal
         ? (
           <InteractionsModal

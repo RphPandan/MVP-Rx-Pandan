@@ -28,6 +28,7 @@ function RxDosageSelector({
   const {
     active_ingredients, openfda,
     pharm_class, dosage, dosage_form,
+    brand_name, generic_name,
   } = drug;
   const { rxcui } = openfda;
 
@@ -42,6 +43,8 @@ function RxDosageSelector({
       rxcui,
       pharm_class,
       dosage_form,
+      brand_name,
+      generic_name,
       adherenceBoxes: [...Array(frequency).keys()].map(() => false),
     };
     e.preventDefault();
@@ -73,6 +76,7 @@ function RxDosageSelector({
             value={directions}
             onChange={(e) => { e.preventDefault(); setDirections(e.target.value); }}
             minLength="8"
+            placeholder="...directions"
             required
           />
           <input

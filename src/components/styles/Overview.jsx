@@ -2,8 +2,7 @@ import styled from 'styled-components/macro';
 import { ColumnContainer, RowContainer } from './Boxes';
 
 const OverviewContainer = styled(ColumnContainer)`
-  min-height: 80em;
-  height: 100em;
+  height: 80em;
   width: 80em;
   min-width: 60em;
   border-radius: 12px;

@@ -36,7 +36,6 @@ function Rxs(props) {
             />
           ))}
         </RxsContainer>
-        {rxList.length === 0 ? <div>you need to go to the dr get some drugs</div> : null}
       </ColumnContainer>
     </AlignmentWrapper>
   );

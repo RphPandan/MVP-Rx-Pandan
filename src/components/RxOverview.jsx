@@ -22,46 +22,26 @@ function RxOverview() {
 
   useEffect(() => {
     retrieveRxList(setRxList)
-      .then((result) => {
-        console.log(result.data);
-        setRxList(result.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then((result) => { setRxList(result.data); })
+      .catch((err) => { console.log(err); });
   }, [rxListUpdated]);
 
   const handleRxSubmit = ((rx) => {
     submitRxToList(rx)
-      .then((result) => {
-        console.log(result);
-        setRxListUpdated((prev) => !prev);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(() => { setRxListUpdated((prev) => !prev); })
+      .catch(() => {});
   });
 
   const handleRxDelete = ((rx) => {
     deleteRx(rx)
-      .then(() => {
-        console.log('rx was deleted');
-        setRxListUpdated((prev) => !prev);
-      })
-      .catch(() => {
-        console.log('error deleting rx');
-      });
+      .then(() => { setRxListUpdated((prev) => !prev); })
+      .catch(() => {});
   });
 
   const handleAdherenceUpdate = ((rx) => {
     updateRx(rx)
-      .then(() => {
-        console.log('rx was updated');
-        setRxListUpdated((prev) => !prev);
-      })
-      .catch(() => {
-        console.log('error in updating rx');
-      });
+      .then(() => { setRxListUpdated((prev) => !prev); })
+      .catch(() => {});
   });
 
   return (
@@ -81,7 +61,6 @@ function RxOverview() {
           >
             Add new Medication
           </button>
-          <button type="button">Navigate to Interactions</button>
         </RowContainer>
         {inputModal
           ? (
