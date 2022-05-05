@@ -1,50 +1,78 @@
-import React, { useState, useEffect, useRef } from 'react';
-import styled from 'styled-components/macro';
+import React, { useState, useEffect } from 'react';
 import { OverviewContainer } from './styles/Overview';
 import Rxs from './Rxs';
 import InputDrugModal from './InputDrugModal';
 import RxInteractions from './RxInteractions';
-import { RowContainer, ColumnContainer } from './styles/Boxes';
-import { Title, Text } from './styles/Text';
+import {
+  RowContainer, ColumnContainer,
+  MainHeader, AlignmentWrapper,
+} from './styles/Boxes';
+import { Title } from './styles/Text';
 
-const Header = styled(RowContainer)`
-  height: 7em;
-  width: 100%;
-  justify-content: center;
-  align-items: center;
-  align-content: center;
-`;
-
-const Something = styled(ColumnContainer)`
-  width: 100%;
-  height: 2em;
-`;
-
-const { retrieveRxList } = require('./controller');
+const {
+  retrieveRxList, submitRxToList,
+  deleteRx, updateRx,
+} = require('./controller');
 
 function RxOverview() {
   const [rxList, setRxList] = useState([]);
   const [inputModal, setInputModal] = useState(false);
-  const somethingRef = useRef();
+  const [rxListUpdated, setRxListUpdated] = useState(false);
+  const [interactionModal, setInteractionModal] = useState(false);
 
   useEffect(() => {
-    retrieveRxList(setRxList);
-  }, []);
+    retrieveRxList(setRxList)
+      .then((result) => {
+        console.log(result.data);
+        setRxList(result.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [rxListUpdated]);
+
+  const handleRxSubmit = ((rx) => {
+    submitRxToList(rx)
+      .then((result) => {
+        console.log(result);
+        setRxListUpdated((prev) => !prev);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  });
+
+  const handleRxDelete = ((rx) => {
+    deleteRx(rx)
+      .then(() => {
+        console.log('rx was deleted');
+        setRxListUpdated((prev) => !prev);
+      })
+      .catch(() => {
+        console.log('error deleting rx');
+      });
+  });
+
+  const handleAdherenceUpdate = ((rx) => {
+    updateRx(rx)
+      .then(() => {
+        console.log('rx was updated');
+        setRxListUpdated((prev) => !prev);
+      })
+      .catch(() => {
+        console.log('error in updating rx');
+      });
+  });
 
   return (
-    <OverviewContainer border="true">
-      <Header>
-        <ColumnContainer>
-          <Title>
-            Rx Pandan
-          </Title>
-          <Text> @RphPandan</Text>
-        </ColumnContainer>
-      </Header>
-      <Something
-        ref={somethingRef}
-        border="true"
-      />
+    <OverviewContainer
+      border="true"
+    >
+      <AlignmentWrapper>
+        <MainHeader background="primary">
+          <Title background="primary" color="secondary"><em>Rx Pandan</em></Title>
+        </MainHeader>
+      </AlignmentWrapper>
       <ColumnContainer>
         <RowContainer>
           <button
@@ -58,15 +86,23 @@ function RxOverview() {
         {inputModal
           ? (
             <InputDrugModal
-              somethingRef={somethingRef}
               setInputModal={setInputModal}
               setRxList={setRxList}
               inputModal={inputModal}
+              handleRxSubmit={handleRxSubmit}
             />
           )
           : null }
-        <Rxs rxList={rxList} />
-        <RxInteractions />
+        <Rxs
+          handleAdherenceUpdate={handleAdherenceUpdate}
+          handleRxDelete={handleRxDelete}
+          rxList={rxList}
+        />
+        <RxInteractions
+          rxList={rxList}
+          setInteractionModal={setInteractionModal}
+          interactionModal={interactionModal}
+        />
       </ColumnContainer>
     </OverviewContainer>
   );

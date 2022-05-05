@@ -2,10 +2,10 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components/macro';
-import { ColumnContainer, RowContainer, AlignmentWrapper } from './styles/Boxes';
-// import Text from './styles/Text';
-
-const { submitRxToList } = require('./controller');
+import {
+  ColumnContainer, RowContainer,
+  AlignmentWrapper, Button,
+} from './styles/Boxes';
 
 const Form = styled(ColumnContainer)`
 `;
@@ -17,17 +17,22 @@ const DrugText = styled.p`
   margin: 5px;
 `;
 
-function RxDosageSelector({ drug, setSelectedDrugIndex }) {
+function RxDosageSelector({
+  setInputModal, handleRxSubmit,
+  drug, setSelectedDrugIndex,
+}) {
   const [directions, setDirections] = useState('');
   const [frequency, setFrequency] = useState(0);
   const [quantity, setQuantity] = useState('');
+
   const {
     active_ingredients, openfda,
-    pharm_class, dosage,
+    pharm_class, dosage, dosage_form,
   } = drug;
   const { rxcui } = openfda;
 
-  const handleSubmit = () => {
+  const handleSubmit = (e) => {
+    console.log(rxcui);
     const rx = {
       active_ingredients,
       dosage,
@@ -36,14 +41,12 @@ function RxDosageSelector({ drug, setSelectedDrugIndex }) {
       quantity,
       rxcui,
       pharm_class,
+      dosage_form,
+      adherenceBoxes: [...Array(frequency).keys()].map(() => false),
     };
-    submitRxToList(rx)
-      .then((result) => {
-        console.log(result);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    e.preventDefault();
+    handleRxSubmit(rx);
+    setInputModal(false);
   };
 
   return (
@@ -93,18 +96,18 @@ function RxDosageSelector({ drug, setSelectedDrugIndex }) {
 
           </RowContainer>
 
-          <button
+          <Button
             type="submit"
             onClick={(e) => { handleSubmit(e); }}
           >
             Save new Rx
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
             onClick={(e) => { e.preventDefault(); setSelectedDrugIndex(null); }}
           >
             restart
-          </button>
+          </Button>
         </Form>
       </FormContainer>
     </AlignmentWrapper>
@@ -118,12 +121,15 @@ RxDosageSelector.propTypes = {
     dosage: PropTypes.string.isRequired,
     generic_name: PropTypes.string.isRequired,
     brand_name: PropTypes.string.isRequired,
+    dosage_form: PropTypes.string.isRequired,
     pharm_class: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     openfda: PropTypes.shape({
       rxcui: PropTypes.arrayOf(PropTypes.string.isRequired).isRequired,
     }).isRequired,
   }).isRequired,
   setSelectedDrugIndex: PropTypes.func.isRequired,
+  handleRxSubmit: PropTypes.func.isRequired,
+  setInputModal: PropTypes.func.isRequired,
 };
 
 export default RxDosageSelector;

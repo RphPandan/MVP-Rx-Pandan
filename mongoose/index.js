@@ -21,6 +21,10 @@ const RxSchema = new Schema({
     type: String,
     required: true,
   },
+  dosage_form: {
+    type: String,
+    required: true,
+  },
   directions: {
     type: String,
     minlength: 8,
@@ -31,6 +35,9 @@ const RxSchema = new Schema({
   frequency: {
     type: Number,
     required: true,
+  },
+  adherenceBoxes: {
+    type: Array,
   },
   quantity: {
     type: Number,
@@ -48,6 +55,13 @@ const RxSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  generic_name: {
+    type: String,
+  },
+  brand_name: {
+    type: String,
+  },
+
 }, { timestamps: true });
 
 const Rx = mongoose.model('rx', RxSchema, 'Rx');

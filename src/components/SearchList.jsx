@@ -8,6 +8,12 @@ import SearchListOption from './SearchListOption';
 
 const styled = require('styled-components/macro');
 
+const FilterButton = styled(Button)`
+  border-radius: 12px;
+  background-color: ${(props) => { const background = props.filtering ? '#3e3e3e' : '#fffffff0'; return background; }};
+  color: ${(props) => { const background = props.filtering ? '#fffffff0' : '#3e3e3e'; return background; }};
+`;
+
 const ListFilterRow = styled(RowContainer)`
   justify-content: space-between;
 `;
@@ -30,7 +36,6 @@ function SearchList(props) {
 
   const handleFilterButton = (e, name) => {
     e.preventDefault();
-    console.log(name);
     const newFilter = filter;
     if (newFilter[name]) {
       newFilter[name] = false;
@@ -39,8 +44,6 @@ function SearchList(props) {
     }
     setFilter(newFilter);
     setFilterChange((prev) => !prev);
-
-    console.log(newFilter);
   };
 
   return (
@@ -62,6 +65,7 @@ function SearchList(props) {
                     key={product_ndc}
                     index={index}
                     dosage={dosage}
+                    dosage_form={dosage_form}
                     product_ndc={product_ndc}
                     generic_name={generic_name}
                     brand_name={brand_name}
@@ -79,16 +83,17 @@ function SearchList(props) {
           {dosageForms.map((formulation) => {
             const { dosageForm, count } = formulation;
             return (
-              <Button
+              <FilterButton
                 as="button"
                 type="button"
+                filtering={filter[dosageForm]}
                 name={dosageForm}
                 onClick={(e) => { handleFilterButton(e, e.target.name); }}
                 key={dosageForm}
               >
                 {`${dosageForm} `}
                 {`${count} results`}
-              </Button>
+              </FilterButton>
             );
           })}
         </ColumnContainer>

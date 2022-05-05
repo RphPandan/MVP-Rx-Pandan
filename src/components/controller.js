@@ -5,9 +5,12 @@ const axios = require('axios');
 const endpoints = {
   GetDrugsRxNorm: 'https://rxnav.nlm.nih.gov/REST/drugs.json?',
   GetSpellingRxNorm: 'https://rxnav.nlm.nih.gov/REST/Prescribe/spellingsuggestions.json?',
+  GetInteractions: 'https://rxnav.nlm.nih.gov/REST/interaction/list.json?rxcuis=',
   GetDrugsOpenFDA: 'https://api.fda.gov/drug/ndc.json?',
   SubmitRx: 'http://localhost:2022/Rx/Submit',
   RetrieveRx: 'http://localhost:2022/Rx/',
+  DeleteRx: 'http://localhost:2022/Rx/delete',
+  UpdateRx: 'http://localhost:2022/Rx',
   test: 'http://localhost:2022/test',
 };
 const test = () => axios.get(endpoints.test);
@@ -15,24 +18,13 @@ const test = () => axios.get(endpoints.test);
 const getDrugsByName = (name) => axios.get(endpoints.GetDrugs, { params: { name } });
 const getSpellingSuggestion = (name) => axios.get(endpoints.GetSpelling, { params: { name } });
 
-const getDrugsOpenFDA = (name, exact = false, limit = 50, skip = 0) => {
+const getDrugsOpenFDA = (name, exact = false, limit = 500, skip = 0) => {
   const search = exact ? `generic_name.exact:"${name}"+OR+brand_name.exact:"${name}"&limit=${limit}&skip=${limit * skip}&sort="asc"`
     : `generic_name:"${name}"+OR+brand_name:"${name}"&limit=${limit}&skip=${limit * skip}`;
   return axios.get(`${endpoints.GetDrugsOpenFDA}search=${search}`);
 };
 
-const submitRxToList = (rx) => axios.post(endpoints.SubmitRx, rx)
-  .then((result) => {
-    console.log(result);
-  })
-  .catch((err) => {
-    console.log(err);
-  });
-
-const retrieveRxList = (setRxList) => {
-  console.log(setRxList);
-  return axios.get(endpoints.RetrieveRx);
-};
+const getInteractions = (rxcuis) => axios.get(`${endpoints.GetInteractions}${rxcuis}`);
 
 const format = (active_ingredients) => {
   const ingredients = [];
@@ -92,12 +84,29 @@ const filterAndModifyDrugList = (arrayOfDrugs, setDosageForms) => {
   return newListOfDrugs;
 };
 
+const submitRxToList = (rx) => axios.post(endpoints.SubmitRx, rx)
+  .then((result) => {
+    console.log(result);
+  })
+  .catch((err) => {
+    console.log(err);
+  });
+
+const retrieveRxList = () => axios.get(endpoints.RetrieveRx);
+
+const deleteRx = (rx) => axios.delete(endpoints.DeleteRx, rx);
+
+const updateRx = (rx) => axios.put(endpoints.UpdateRx, rx);
+
 module.exports = {
   getDrugsByName,
   getSpellingSuggestion,
+  getInteractions,
   getDrugsOpenFDA,
   filterAndModifyDrugList,
   submitRxToList,
   retrieveRxList,
+  deleteRx,
+  updateRx,
   test,
 };

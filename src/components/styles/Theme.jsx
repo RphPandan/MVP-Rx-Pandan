@@ -3,7 +3,7 @@ import styled from 'styled-components/macro';
 const colors = {
   primary: '#30323a',
   secondary: '#fdfdfdef',
-  warning: '#da3030',
+  warning: '#da5050dc',
   accent: '#9bbaeb',
   other: '#8D93AB',
   main: '#f5f5f5',

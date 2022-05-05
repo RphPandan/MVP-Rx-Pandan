@@ -6,7 +6,7 @@ import { ColumnContainer, AlignmentWrapper } from './styles/Boxes';
 // import Text from './styles/Text';
 
 const SelectRxButton = styled(ColumnContainer)`
-  width: 35%;
+  width: 40em;
   &:hover {
     background-color: lightblue;
     cursor: pointer;
@@ -32,7 +32,7 @@ function SearchListOption(props) {
     // generic_name,
     // brand_name,
     active_ingredients,
-    dosage,
+    dosage, dosage_form,
     index,
     setSelectedDrugIndex,
   } = props;
@@ -56,10 +56,10 @@ function SearchListOption(props) {
         {/* {!isBrand ? <DrugText
           font-size={!isBrand}><b>{`${brand_name}**`}</b></DrugText> : null} */}
         <DrugText font_size="14px" font_weight="600">
-          {active_ingredients}
+          {`${active_ingredients}  ${dosage_form}`}
         </DrugText>
         <DrugText>
-          {dosage}
+          {`${dosage}`}
         </DrugText>
       </SelectRxButton>
     </AlignmentWrapper>
@@ -73,6 +73,7 @@ SearchListOption.propTypes = {
   setSelectedDrugIndex: PropTypes.func.isRequired,
   active_ingredients: PropTypes.string.isRequired,
   dosage: PropTypes.string.isRequired,
+  dosage_form: PropTypes.string.isRequired,
   // brand_name: PropTypes.string.isRequired,
   // generic_name: PropTypes.string.isRequired,
   // dosage_form: PropTypes.string.isRequired,

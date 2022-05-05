@@ -17,14 +17,14 @@ const controller = {
   },
   submit: (req, res) => {
     const {
-      active_ingredients, dosage,
-      directions, frequency, quantity,
-      rxcui, pharm_class,
+      active_ingredients,
     } = req.body;
     Rx.findOneAndUpdate(
       { active_ingredients },
       req.body,
-      { upsert: true, timestamps: true, runValidators: true }
+      {
+        upsert: true, timestamps: true, runValidators: true,
+      },
     ).then((result) => {
       console.log(result);
       res.send(result);
@@ -36,13 +36,26 @@ const controller = {
     // res.send('hello from submit');
   },
   updateOne: (req, res) => {
-    res.send('hello from updateOne');
+    const { _id, quantity, adherenceBoxes } = req.body;
+    console.log(_id, quantity, adherenceBoxes);
+
+    Rx.updateOne({ _id }, req.body, { runValidators: true })
+      .then((result) => {
+        console.log(result);
+        res.send(result);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.send(err);
+      });
+
+    // res.send('hello from updateOne');
   },
   deleteAll: (req, res) => {
     Rx.deleteMany({})
       .then((result) => {
         console.log(result);
-        res.send('deleted all documents', result);
+        res.send(result);
       })
       .catch((err) => {
         console.log(err);
@@ -50,14 +63,15 @@ const controller = {
       });
   },
   deleteOne: (req, res) => {
-    Rx.delete({})
+    console.log(req.body);
+    Rx.deleteOne(req.body)
       .then((result) => {
         console.log(result);
-        res.send('deleted all documents', result);
+        res.send(result);
       })
       .catch((err) => {
         console.log(err);
-        res.status(500).send('error in deleting documents', err);
+        res.status(500).send(err);
       });
   },
 };

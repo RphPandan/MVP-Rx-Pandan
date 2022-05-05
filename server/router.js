@@ -22,7 +22,7 @@ router
   .get(controller.retrieveAll);
 
 router
-  .route('./Rx')
+  .route('/Rx')
   .put(controller.updateOne);
 
 module.exports = router;
