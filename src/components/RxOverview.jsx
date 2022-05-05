@@ -18,30 +18,44 @@ const {
 function RxOverview() {
   const [rxList, setRxList] = useState([]);
   const [inputModal, setInputModal] = useState(false);
-  const [rxListUpdated, setRxListUpdated] = useState(false);
+  // const [rxListUpdated, setRxListUpdated] = useState(false);
   const [interactionModal, setInteractionModal] = useState(false);
-
-  useEffect(() => {
-    retrieveRxList(setRxList)
-      .then((result) => { setRxList(result.data); })
+  // const [rxListLength, setRxListLength] = useState(0);
+  const getRx = () => {
+    retrieveRxList()
+      .then((result) => {
+        setRxList(result.data);
+      })
       .catch((err) => { console.log(err); });
-  }, [rxListUpdated]);
+  };
+  useEffect(() => {
+    getRx();
+  }, []);
 
   const handleRxSubmit = ((rx) => {
     submitRxToList(rx)
-      .then(() => { setRxListUpdated((prev) => !prev); })
+      .then(() => {
+        getRx();
+        // setRxListUpdated((prev) => !prev);
+      })
       .catch(() => {});
   });
 
   const handleRxDelete = ((rx) => {
     deleteRx(rx)
-      .then(() => { setRxListUpdated((prev) => !prev); })
+      .then(() => {
+        getRx();
+        // setRxListUpdated((prev) => !prev);
+      })
       .catch(() => {});
   });
 
   const handleAdherenceUpdate = ((rx) => {
     updateRx(rx)
-      .then(() => { setRxListUpdated((prev) => !prev); })
+      .then(() => {
+        getRx();
+        // setRxListUpdated((prev) => !prev);
+      })
       .catch(() => {});
   });
 

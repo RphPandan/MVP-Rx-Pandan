@@ -94,7 +94,10 @@ const submitRxToList = (rx) => axios.post(endpoints.SubmitRx, rx)
 
 const retrieveRxList = () => axios.get(endpoints.RetrieveRx);
 
-const deleteRx = (rx) => axios.delete(endpoints.DeleteRx, rx);
+const deleteRx = (rx) => {
+  console.log(rx);
+  return axios.delete(endpoints.DeleteRx, { data: rx });
+};
 
 const updateRx = (rx) => axios.put(endpoints.UpdateRx, rx);
 

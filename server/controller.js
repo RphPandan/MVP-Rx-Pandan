@@ -63,7 +63,7 @@ const controller = {
       });
   },
   deleteOne: (req, res) => {
-    console.log(req.body);
+    // console.log(req.body, 'something here>');
     Rx.deleteOne(req.body)
       .then((result) => {
         console.log(result);
@@ -73,6 +73,7 @@ const controller = {
         console.log(err);
         res.status(500).send(err);
       });
+    // res.send('hello world');
   },
 };
 
