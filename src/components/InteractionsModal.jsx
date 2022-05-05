@@ -23,12 +23,16 @@ const Disclaimer = styled.p`
   background: #ffff1b;
 `;
 
-const InteractionHeaderRow = styled(RowContainer)`
+const InteractionBottomHeaderRow = styled(RowContainer)`
   justify-content: space-between;
   column-gap: 10px;
   align-items: center;
   border-radius: 12px;
+  padding: 10px;
+`;
 
+const InteractionTopHeaderRow = styled(HeaderRow)`
+  padding: 10px;
 `;
 
 const InteractionButton = styled(Button)`
@@ -50,7 +54,7 @@ const DrugInteractionsModal = styled(ColumnContainer)`
   border-radius: 12px;
   transform: translate(-50%, 20%);
   /* left: ${window.innerWidth / 2}px; */
-  width: 80em;
+  width: 70em;
   z-index: 2;
   height: 50em;
   opacity: 100%;
@@ -62,7 +66,7 @@ const DrugInteractionsModal = styled(ColumnContainer)`
 
 const DrugSelect = styled(Select)`
   height: 50px;
-  width: 25em;
+  width: 20%;
   font-size: 16px;
   margin: 0 10px 0 0 ;
   border-radius: 12px;
@@ -74,13 +78,13 @@ const InteractionDrugsRow = styled(RowContainer)`
   column-gap:10px;
   padding: 10px;
   border-radius: 12px;
-  flex-wrap: wrap;
   row-gap: 10px;
 `;
 
 const DrugRow = styled(RowContainer)`
   row-gap: 10px;
   column-gap:10px;
+  flex-wrap: wrap;
 `;
 
 const SelectAllButton = styled(Button)`
@@ -92,7 +96,6 @@ const CheckInteractionButton = styled(SelectAllButton)`
 `;
 
 const DrugOption = styled.option`
-  display:flex;
   align-items: center;
   text-align: left;
 `;
@@ -164,7 +167,7 @@ function InteractionsModal(props) {
           X
         </CloseButton>
         <Header> Interaction Checker - NLM</Header>
-        <HeaderRow>
+        <InteractionTopHeaderRow>
           <h2>Choose medication to look up interactions for</h2>
           <SelectAllButton
             type="button"
@@ -178,48 +181,47 @@ function InteractionsModal(props) {
           >
             <DrugOption value="DEFAULT" disabled>Select an Option</DrugOption>
             {rxList.map((rx, index) => {
-              const { _id } = rx;
-              let { active_ingredients } = rx;
-              if (active_ingredients.length > 35) {
-                active_ingredients = `${active_ingredients.slice(0, 35)}...`;
-              }
+              const { _id, display_name } = rx;
+              // let { active_ingredients } = rx;
+              // if (active_ingredients.length > 35) {
+              //   active_ingredients = `${active_ingredients.slice(0, 35)}...`;
+              // }
               return (
                 <DrugOption
                   key={_id}
                   value={index}
                 >
-                  {active_ingredients}
+                  {display_name}
                 </DrugOption>
               );
             })}
           </DrugSelect>
-        </HeaderRow>
+        </InteractionTopHeaderRow>
         <InteractionDrugsRow>
           <ColumnContainer>
-            <h3>Checking Interactions for - </h3>
+            <h3>Checking Interactions for </h3>
           </ColumnContainer>
           <DrugRow>
             {interactionList.map((iRx) => {
               if (iRx) {
-                const { _id } = iRx;
-                let { active_ingredients } = iRx;
-                if (active_ingredients.length > 50) {
-                  active_ingredients = `${active_ingredients.slice(0, 50)}...`;
-                }
+                const { _id, display_name, dosage_form } = iRx;
+                // if (active_ingredients.length > 50) {
+                //   active_ingredients = `${active_ingredients.slice(0, 50)}...`;
+                // }
                 return (
                   <InteractionButton
                     key={_id}
                     value={_id}
                     onClick={(e) => { removeDrugFromList(e); }}
                   >
-                    <b>{active_ingredients}</b>
+                    <b>{`${display_name} ${dosage_form}`}</b>
                   </InteractionButton>
                 );
               } return null;
             })}
           </DrugRow>
         </InteractionDrugsRow>
-        <InteractionHeaderRow>
+        <InteractionBottomHeaderRow>
 
           <CheckInteractionButton
             type="button"
@@ -232,7 +234,7 @@ function InteractionsModal(props) {
               <Disclaimer><b>{`Disclaimer - ${interactions.nlmDisclaimer}`}</b></Disclaimer>
             )
             : null}
-        </InteractionHeaderRow>
+        </InteractionBottomHeaderRow>
         {interactions
           ? (
             <Interactions

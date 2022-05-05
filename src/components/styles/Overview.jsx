@@ -6,6 +6,8 @@ const OverviewContainer = styled(ColumnContainer)`
   width: 80em;
   min-width: 60em;
   border-radius: 12px;
+  padding: 10px;
+  margin: 10px;
 `;
 
 const OverviewRow = styled(RowContainer)`

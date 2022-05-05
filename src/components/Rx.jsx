@@ -1,17 +1,29 @@
 /* eslint-disable camelcase */
 /* eslint-disable react/forbid-prop-types */
-import React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
 import {
-  ColumnContainer, AlignmentWrapper,
-  Button, HeaderRow,
+  ColumnContainer, RowContainer,
+  Button, HeaderRow, RxContainer,
 } from './styles/Boxes';
+import { Text2 } from './styles/Text';
 
 const styled = require('styled-components/macro');
 // const { deleteRx } = require('./controller');
+const InfoColumn = styled(ColumnContainer)`
+  row-gap: 10px;
+  padding: 5px;
+`;
 
+const AdherenceRow = styled(RowContainer)`
+  column-gap: 10px;
+`;
 const AdherentButton = styled(Button)`
   background: ${(props) => { const background = props.adherent ? '#9bbaeb' : '#da5050dc'; return background; }};
+  height: 30px;
+  width: 60px;
+  font-size: 16px;
+  font-weight: 700;
 `;
 const DeleteButton = styled(Button)`
   width: 135px;
@@ -19,41 +31,25 @@ const DeleteButton = styled(Button)`
   align-self: flex-end;
 `;
 
-const RxContainer = styled(ColumnContainer)`
-  border-left: none;
-  border-right: none;
-  border-top: none;
-  padding: 10px;
-`;
-
 function Rx(props) {
   const { rx, handleRxDelete, handleAdherenceUpdate } = props;
   const {
-    active_ingredients,
+    // active_ingredients,
     // adherence,
     dosage,
     // quantity,
     directions,
     quantity,
     adherenceBoxes,
+    dosage_form,
+    display_name,
     // rxcui,
     _id,
   } = rx;
-  // const [adhere,
-  //   setAdherenceBoxes] = useState(adherenceBoxes);
-  // const [adherenceUpdate, setAdherenceUpdate] = useState(false);
 
-  // useEffect(() => {
-  // }, [adherenceUpdate]);
-  // const handleAdherence = (e, i) => {
-  //   console.log('im firing');
-  //   e.preventDefault();
-  //   const newFrequency = adherenceBoxes;
-  //   newFrequency[i] = !newFrequency[i];
-  //   console.log(newFrequency);
-  //   setAdherenceBoxes(newFrequency);
-  //   setAdherenceUpdate((prev) => !prev);
-  // };
+  useEffect(() => {
+  }, []);
+
   const handleDelete = (e) => {
     e.preventDefault();
     handleRxDelete({ _id });
@@ -72,26 +68,27 @@ function Rx(props) {
     handleAdherenceUpdate(rx);
   };
   return (
-    <AlignmentWrapper>
-      <RxContainer border="true">
-        <HeaderRow>
-          <div>
-            {`DrugName- ${active_ingredients} - ${dosage}`}
-          </div>
-          <DeleteButton
-            type="button"
-            onClick={(e) => { handleDelete(e); }}
-          >
-            delete
-          </DeleteButton>
-        </HeaderRow>
+    <RxContainer border="true">
+      <HeaderRow>
         <div>
-          {directions}
+          <b>{`${display_name} - ${dosage}`}</b>
         </div>
-        <div>
-          {`${quantity}  remaining`}
-        </div>
-        <div>
+        <DeleteButton
+          type="button"
+          onClick={(e) => { handleDelete(e); }}
+        >
+          delete
+        </DeleteButton>
+      </HeaderRow>
+      <InfoColumn>
+        <Text2>
+          {`Directions - ${directions}`}
+        </Text2>
+        <Text2>
+          {`#${quantity} ${dosage_form}  remaining`}
+        </Text2>
+        <AdherenceRow>
+
           {adherenceBoxes.map((x, index) => (
             <AdherentButton
               type="button"
@@ -102,9 +99,9 @@ function Rx(props) {
               {index + 1}
             </AdherentButton>
           ))}
-        </div>
-      </RxContainer>
-    </AlignmentWrapper>
+        </AdherenceRow>
+      </InfoColumn>
+    </RxContainer>
   );
 }
 

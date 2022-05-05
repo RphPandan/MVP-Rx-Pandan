@@ -8,6 +8,9 @@ import {
   ColumnContainer, CloseButton,
   Button, ModalBackground,
 } from './styles/Boxes';
+import {
+  Text2,
+} from './styles/Text';
 
 // import SearchListOption from './SearchListOption';
 import RxDosageSelector from './RxDosageSelector';
@@ -95,7 +98,7 @@ function InputDrugModal(props) {
           >
             Search OpenFda
           </SearchButton>
-
+          <Text2> Limit search too...</Text2>
           <LimitInput
             id="limit"
             type="number"
@@ -103,6 +106,7 @@ function InputDrugModal(props) {
             placeholder="...defaults to 500"
             onChange={(e) => { e.preventDefault(); setLimit(e.target.value); }}
           />
+          <Text2> Results </Text2>
           <CloseButton
             type="button"
             onClick={(e) => { e.preventDefault(); setInputModal(false); }}

@@ -4,10 +4,11 @@ import Rxs from './Rxs';
 import InputDrugModal from './InputDrugModal';
 import RxInteractions from './RxInteractions';
 import {
-  RowContainer, ColumnContainer,
-  MainHeader, AlignmentWrapper,
+  ColumnContainer,
+  MainHeader,
 } from './styles/Boxes';
-import { Title } from './styles/Text';
+import { MainTitle } from './styles/Text';
+import { LeafIcon, RxIcon } from './styles/Icons';
 
 const {
   retrieveRxList, submitRxToList,
@@ -48,20 +49,14 @@ function RxOverview() {
     <OverviewContainer
       border="true"
     >
-      <AlignmentWrapper>
-        <MainHeader background="primary">
-          <Title background="primary" color="secondary"><em>Rx Pandan</em></Title>
-        </MainHeader>
-      </AlignmentWrapper>
+      <MainHeader background="primary">
+        <MainTitle background="primary" color="secondary">
+          <RxIcon />
+          <em>Pandan</em>
+        </MainTitle>
+        <LeafIcon />
+      </MainHeader>
       <ColumnContainer>
-        <RowContainer>
-          <button
-            type="button"
-            onClick={() => setInputModal(true)}
-          >
-            Add new Medication
-          </button>
-        </RowContainer>
         {inputModal
           ? (
             <InputDrugModal
@@ -76,6 +71,7 @@ function RxOverview() {
           handleAdherenceUpdate={handleAdherenceUpdate}
           handleRxDelete={handleRxDelete}
           rxList={rxList}
+          setInputModal={setInputModal}
         />
         <RxInteractions
           rxList={rxList}

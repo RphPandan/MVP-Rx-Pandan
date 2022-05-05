@@ -2,7 +2,7 @@
 import React from 'react';
 import { PropTypes } from 'prop-types';
 import styled from 'styled-components/macro';
-import { ColumnContainer, AlignmentWrapper } from './styles/Boxes';
+import { ColumnContainer } from './styles/Boxes';
 // import Text from './styles/Text';
 
 const SelectRxButton = styled(ColumnContainer)`
@@ -46,23 +46,21 @@ function SearchListOption(props) {
   //   .join(' + ');
 
   return (
-    <AlignmentWrapper>
-      <SelectRxButton
-        // as="button"
-        border="true"
-        type="button"
-        onClick={(e) => { e.preventDefault(); setSelectedDrugIndex(index); }}
-      >
-        {/* {!isBrand ? <DrugText
-          font-size={!isBrand}><b>{`${brand_name}**`}</b></DrugText> : null} */}
-        <DrugText font_size="14px" font_weight="600">
-          {`${active_ingredients}  ${dosage_form}`}
-        </DrugText>
-        <DrugText>
-          {`${dosage}`}
-        </DrugText>
-      </SelectRxButton>
-    </AlignmentWrapper>
+    <SelectRxButton
+      // as="button"
+      border="true"
+      type="button"
+      onClick={(e) => { e.preventDefault(); setSelectedDrugIndex(index); }}
+    >
+      {/* {!isBrand ? <DrugText
+        font-size={!isBrand}><b>{`${brand_name}**`}</b></DrugText> : null} */}
+      <DrugText font_size="14px" font_weight="600">
+        {`${active_ingredients}  ${dosage_form}`}
+      </DrugText>
+      <DrugText>
+        {`${dosage}`}
+      </DrugText>
+    </SelectRxButton>
   );
 }
 SearchListOption.propTypes = {

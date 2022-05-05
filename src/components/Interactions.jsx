@@ -33,11 +33,6 @@ Interactions.propTypes = {
     fullInteractionTypeGroup: PropTypes.arrayOf(PropTypes.shape({
       sourceDisclaimer: PropTypes.string.isRequired,
       sourceName: PropTypes.string.isRequired,
-      fullInteractionsType: PropTypes.arrayOf(PropTypes.shape({
-        interactionPair: PropTypes.arrayOf(PropTypes.shape({
-          description: PropTypes.string.isRequired,
-        })).isRequired,
-      })).isRequired,
     })).isRequired,
   }).isRequired,
 };

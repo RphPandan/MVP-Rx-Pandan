@@ -46,6 +46,18 @@ const HeaderRow = styled(RowContainer)`
   border-radius: 12px;
 `;
 
+const RxContainer = styled(ColumnContainer)`
+  border-left: none;
+  border-right: none;
+  border-top: none;
+  padding: 10px;
+  min-height: 200px;
+`;
+
+const DummyRxContainer = styled(RxContainer)`
+  justify-content: center;
+  align-items: center;
+`;
 const MainHeader = styled(RowContainer)`
   justify-content: space-between;
   align-content: space-around;
@@ -118,6 +130,18 @@ const Button = styled(ButtonTheme)`
   };
 `;
 
+const AddRxButton = styled(Button)`
+  width: 200px;
+  height: 200px;
+  border-radius: 30%;
+`;
+
+const FormButton = styled(Button)`
+  width: 100px;
+  height: 70px;
+  font-size: 16px;
+`;
+
 const ModalBackground = styled(RowContainer)`
   width: 100%;
   height: 100%;
@@ -143,8 +167,9 @@ const CloseButton = styled(Button)`
 export {
   Header, AlignmentWrapper,
   ColumnContainer, RowContainer,
-  BigContainer, EmptyBoxes,
+  BigContainer, EmptyBoxes, FormButton,
   AppContainer, Button, CloseButton,
   MainHeader, ModalBackground,
-  HeaderRow,
+  HeaderRow, RxContainer, AddRxButton,
+  DummyRxContainer,
 };

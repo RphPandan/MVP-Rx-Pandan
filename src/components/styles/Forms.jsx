@@ -44,8 +44,20 @@ const LimitInput = styled(Input)`
   text-align-last: center;
 `;
 
+const DirectionInput = styled(Input)`
+  width: 80%;
+`;
+
+const FrequencyInput = styled(Input)`
+  width: 200px;
+`;
+
+const QuantityInput = styled(Input)`
+  width: 200px;
+`;
+
 export {
-  Input, Select,
-  InputTextArea, InputText,
-  DrugInput, LimitInput,
+  Input, Select, DirectionInput,
+  InputTextArea, InputText, FrequencyInput,
+  DrugInput, LimitInput, QuantityInput,
 };

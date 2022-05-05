@@ -61,7 +61,9 @@ const RxSchema = new Schema({
   brand_name: {
     type: String,
   },
-
+  display_name: {
+    type: String,
+  },
 }, { timestamps: true });
 
 const Rx = mongoose.model('rx', RxSchema, 'Rx');

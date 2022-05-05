@@ -3,8 +3,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Rx from './Rx';
-import { MainHeader, AlignmentWrapper, ColumnContainer } from './styles/Boxes';
+import { MainHeader, ColumnContainer } from './styles/Boxes';
 import { Title2 } from './styles/Text';
+import DummyContainer from './DummyContainer';
 
 const styled = require('styled-components/macro');
 
@@ -18,26 +19,25 @@ const RxsContainer = styled(ColumnContainer)`
 function Rxs(props) {
   const {
     rxList, handleRxDelete,
-    handleAdherenceUpdate,
+    handleAdherenceUpdate, setInputModal,
   } = props;
   return (
-    <AlignmentWrapper>
-      <ColumnContainer>
-        <MainHeader background="primary">
-          <Title2 background="primary" color="secondary">Medication List</Title2>
-        </MainHeader>
-        <RxsContainer border="true">
-          {rxList.map((rx) => (
-            <Rx
-              handleAdherenceUpdate={handleAdherenceUpdate}
-              handleRxDelete={handleRxDelete}
-              key={rx._id}
-              rx={rx}
-            />
-          ))}
-        </RxsContainer>
-      </ColumnContainer>
-    </AlignmentWrapper>
+    <ColumnContainer>
+      <MainHeader background="primary">
+        <Title2 background="primary" color="secondary">Medication List</Title2>
+      </MainHeader>
+      <RxsContainer border="true">
+        {rxList.map((rx) => (
+          <Rx
+            handleAdherenceUpdate={handleAdherenceUpdate}
+            handleRxDelete={handleRxDelete}
+            key={rx._id}
+            rx={rx}
+          />
+        ))}
+        <DummyContainer setInputModal={setInputModal} />
+      </RxsContainer>
+    </ColumnContainer>
   );
 }
 
@@ -45,6 +45,7 @@ Rxs.propTypes = {
   rxList: PropTypes.arrayOf(PropTypes.object.isRequired).isRequired,
   handleRxDelete: PropTypes.func.isRequired,
   handleAdherenceUpdate: PropTypes.func.isRequired,
+  setInputModal: PropTypes.func.isRequired,
 };
 
 export default Rxs;
